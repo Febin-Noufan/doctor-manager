@@ -22,7 +22,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Doctor Registration',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+      primarySwatch: Colors.teal,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+    ),
       home: LandingPageRouter(),
     );
   }

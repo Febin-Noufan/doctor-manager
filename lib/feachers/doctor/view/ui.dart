@@ -1,4 +1,5 @@
 import 'package:doctor_manager/feachers/doctor/presenter/presenter.dart';
+import 'package:doctor_manager/feachers/doctor/view/profile.dart';
 import 'package:flutter/material.dart';
 
 class DoctorView extends StatefulWidget {
@@ -42,23 +43,27 @@ class _DoctorViewState extends State<DoctorView> {
               onPressed: () {
                 setState(() {
                   widget.presenter.registerDoctor(
-                  nameController.text,
-                  emailController.text,
-                );
+                    nameController.text,
+                    emailController.text,
+                  );
+                  nameController.clear();
+                  emailController.clear();
                 });
+
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage(),));
               },
               child: Text('Register'),
             ),
-            Expanded(
-                child: ListView.builder(
-                  itemCount: widget.presenter.doctors.length,
-              itemBuilder: (context, index) {
-                final doctor=widget.presenter.doctors[index];
-                return ListTile(
-                  title: Text(doctor.name),
-                );
-              },
-            ))
+            // Expanded(
+            //     child: ListView.builder(
+            //   itemCount: widget.presenter.doctors.length,
+            //   itemBuilder: (context, index) {
+            //     final doctor = widget.presenter.doctors[index];
+            //     return ListTile(
+            //       title: Text(doctor.name),
+            //     );
+            //   },
+            // ))
           ],
         ),
       ),
