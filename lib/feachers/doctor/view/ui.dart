@@ -1,24 +1,24 @@
 import 'package:doctor_manager/feachers/doctor/presenter/presenter.dart';
+import 'package:doctor_manager/feachers/doctor/presenter/shared_pref_presenter.dart';
+import 'package:doctor_manager/feachers/doctor/view/login.dart';
 import 'package:doctor_manager/feachers/doctor/view/profile.dart';
 import 'package:flutter/material.dart';
 
 class DoctorView extends StatefulWidget {
   final DoctorPresenter presenter;
+  final SharedPrefPresenter sharedPrefPresenter;
 
-  DoctorView({required this.presenter});
+  const DoctorView(
+      {super.key, required this.presenter, required this.sharedPrefPresenter});
 
   @override
   State<DoctorView> createState() => _DoctorViewState();
 }
 
 class _DoctorViewState extends State<DoctorView> {
-  final TextEditingController nameController = TextEditingController();
-
-  final TextEditingController emailController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    widget.presenter.getAllDoctors();
+    widget.presenter.getAllDoctorsfor();
     return Scaffold(
       appBar: AppBar(title: Text('Doctor - Register')),
       body: Padding(
@@ -26,12 +26,20 @@ class _DoctorViewState extends State<DoctorView> {
         child: Column(
           children: [
             TextField(
-              controller: nameController,
+              controller: widget.presenter.nameController,
               decoration: InputDecoration(labelText: 'Name'),
             ),
             TextField(
-              controller: emailController,
+              controller: widget.presenter.emailController,
               decoration: InputDecoration(labelText: 'Email'),
+            ),
+            TextField(
+              controller: widget.presenter.numberController,
+              decoration: InputDecoration(labelText: 'Number'),
+            ),
+            TextField(
+              controller: widget.presenter.passController,
+              decoration: InputDecoration(labelText: 'Password'),
             ),
             DropdownButtonFormField<String>(
               items: widget.presenter.getDepartmentDropdownItems(),
@@ -40,30 +48,57 @@ class _DoctorViewState extends State<DoctorView> {
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  widget.presenter.registerDoctor(
-                    nameController.text,
-                    emailController.text,
-                  );
-                  nameController.clear();
-                  emailController.clear();
-                });
+              onPressed: () async {
+                widget.presenter.registerDoctor(
+                  widget.presenter.nameController.text,
+                  widget.presenter.emailController.text,
+                  widget.presenter.passController.text,
+                  widget.presenter.numberController.text,
+                );
+                await widget.sharedPrefPresenter.saveValueFromSharedPref(
+                    widget.presenter.nameController.text);
 
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage(),));
+                widget.presenter.nameController.clear();
+                widget.presenter.emailController.clear();
+                widget.presenter.passController.clear();
+                widget.presenter.numberController.clear();
+
+                Navigator.pushReplacement(
+                  // ignore: use_build_context_synchronously
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(
+                      doctorPresenter: DoctorPresenter(),
+                      sharedPrefPresenter: SharedPrefPresenter(),
+                    ),
+                  ),
+                );
               },
               child: Text('Register'),
             ),
-            // Expanded(
-            //     child: ListView.builder(
-            //   itemCount: widget.presenter.doctors.length,
-            //   itemBuilder: (context, index) {
-            //     final doctor = widget.presenter.doctors[index];
-            //     return ListTile(
-            //       title: Text(doctor.name),
-            //     );
-            //   },
-            // ))
+            SizedBox(
+              height: 100,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Login page"),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(
+                              sharedPrefPresenter: SharedPrefPresenter(),
+                            ),
+                          ));
+                    },
+                    child: Text(
+                      "click",
+                      style: TextStyle(color: Colors.blue),
+                    ))
+              ],
+            )
           ],
         ),
       ),

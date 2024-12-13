@@ -24,7 +24,7 @@ class AdminInteractor {
 
   List<Department> getDepartments() {
     final departments = _departmentBox.values.toList();
-    //print(departments.map((e) => e.runtimeType).toList()); // Check the types
-    return departments.cast<Department>(); // Ensure explicit casting
+    //print(departments.map((e) => e.runtimeType).toList());
+    return departments.cast<Department>(); 
   }
 }

@@ -1,23 +1,21 @@
 import 'package:doctor_manager/feachers/admin/entity/department.dart';
 import 'package:doctor_manager/feachers/admin/interactor/intracter.dart';
 
-class AdminPresenter {
-  final AdminInteractor interactor;
-
-  AdminPresenter({required this.interactor});
+class AdminPresenter extends AdminInteractor {
+  AdminPresenter();
 
   List<Department> deparment = [];
 
   void addDepartment(String name) {
-    interactor.createDepartment(name);
+    createDepartment(name);
   }
 
-  void deleteDepartment(String id) {
-    interactor.deleteDepartment(id);
+ 
+  void deleteDepartmentfor(String id) {
+    deleteDepartment(id);
   }
 
-  void getDepartment() {
-    deparment = interactor.getDepartments();
-   // print("{{{{{{{{{{{{{{{{{{{${deparment}}}}}}}}}}}}}}}}}}}}");
+  void getDepartmentfor() {
+    deparment = getDepartments();
   }
 }

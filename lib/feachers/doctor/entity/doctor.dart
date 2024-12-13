@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'doctor.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 2)
 class Doctor {
   @HiveField(0)
   final String id;
@@ -16,7 +16,15 @@ class Doctor {
   @HiveField(3)
   final String departmentId;
 
+  @HiveField(4)
+  final String password;
+
+  @HiveField(5)
+  final String number;
+
   Doctor({
+    required this.password,
+    required this.number,
     required this.id,
     required this.name,
     required this.email,
